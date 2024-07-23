@@ -1,0 +1,13 @@
+mutation GoogleSignIn($idToken: String!) {
+  googleSignIn(idToken: $idToken) {
+    userId
+    role
+    email
+    firstName
+    lastName
+    profileImage
+    accessToken
+    issuedAt
+    expiresAt
+  }
+}

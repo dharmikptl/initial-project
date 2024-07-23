@@ -1,0 +1,15 @@
+query Me {
+  me {
+    id
+    email
+    role
+    isActive
+    firstName
+    lastName
+    name
+    gender
+    profileImage
+    createdAt
+    updatedAt
+  }
+}

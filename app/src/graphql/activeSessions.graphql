@@ -1,0 +1,8 @@
+query ActiveSessions {
+  activeSessions {
+    id
+    userAgent
+    createdAt
+    updatedAt
+  }
+}
