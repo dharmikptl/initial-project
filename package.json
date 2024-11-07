@@ -1,0 +1,14 @@
+{
+  "name": "initial-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app": "cd packages/app && npm dev",
+    "api": "cd packages/api && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Dharmik Patel",
+  "license": "ISC"
+}

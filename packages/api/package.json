@@ -1,12 +1,12 @@
 {
-  "name": "typescript-graphql-api",
+  "name": "api",
   "version": "1.0.0",
   "description": "Typescript GraphQL API",
   "main": "build/server.js",
   "scripts": {
-    "start": "node .",
+    "start": "npm run build && nodemon .",
     "watch": "tsc -w",
-    "dev": "nodemon .",
+    "dev": "npm run build && nodemon .",
     "dev:watch": "concurrently \"npm run watch\" \"npm run dev\"",
     "clean": "rimraf build",
     "build": "tsc",
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ejekanshjain/auth.git"
+    "url": "git+https://github.com/dharmikptl/auth.git"
   },
   "keywords": [],
-  "author": "Ekansh Jain",
+  "author": "Dharmik Patel",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ejekanshjain/auth/issues"
+    "url": "https://github.com/dharmikptl/kmpvm-main/issues"
   },
-  "homepage": "https://github.com/ejekanshjain/auth#readme",
+  "homepage": "https://github.com/dharmikptl/auth#readme",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.2",
@@ -30,13 +30,14 @@
     "@types/express": "^4.17.12",
     "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^15.6.1",
+    "@types/semver": "^7.5.8",
     "concurrently": "^6.2.0",
     "nodemon": "^2.0.7",
     "rimraf": "^3.0.2",
     "typescript": "^4.3.2"
   },
   "dependencies": {
-    "apollo-server-express": "^2.25.0",
+    "apollo-server-express": "^3.13.0",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.1",
     "cookie-parser": "^1.4.5",
@@ -48,6 +49,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
+    "semver": "^7.6.3",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.32"
   }
