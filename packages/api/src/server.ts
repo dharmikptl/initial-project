@@ -1,38 +1,29 @@
-import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import express from 'express'
+import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
+import { authChecker } from './auth/authChecker'
+import { authTokenMiddleware } from './auth/authTokenMiddleware'
 import {
   COOKIE_SECRET,
   CORS_ORIGIN,
+  DB_POSTGRES_LOGGING,
+  DB_POSTGRES_SYNCHRONIZE,
   JWT_ACCESS_SECRET,
   NODE_ENV,
-  PORT,
-  DB_POSTGRES_HOST,
-  DB_POSTGRES_PORT,
-  DB_POSTGRES_USERNAME,
-  DB_POSTGRES_PASSWORD,
-  DB_POSTGRES_DATABASE,
-  DB_POSTGRES_SYNCHRONIZE,
-  DB_POSTGRES_LOGGING
+  PORT
 } from './config'
 import { UserResolver } from './graphql/resolvers/UserResolver'
-import { authChecker } from './auth/authChecker'
-import { authTokenMiddleware } from './auth/authTokenMiddleware'
 
 const main = async () => {
   console.log('Starting server up...')
 
   await createConnection({
     type: 'postgres',
-    host: DB_POSTGRES_HOST,
-    port: DB_POSTGRES_PORT,
-    username: DB_POSTGRES_USERNAME,
-    password: DB_POSTGRES_PASSWORD,
-    database: DB_POSTGRES_DATABASE,
+    url: process.env.DATABASE_URL,
     synchronize: DB_POSTGRES_SYNCHRONIZE,
     logging: DB_POSTGRES_LOGGING,
     entities: ['build/entity/**/*.js'],
@@ -49,19 +40,23 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res })
+    context: ({ req, res }) => ({ req, res }),
+    introspection: true // Keep introspection on for development environments
   })
 
   const app = express()
 
   app.use(
     cors({
-      origin: CORS_ORIGIN,
-      credentials: true
+      origin: ['https://studio.apollographql.com', CORS_ORIGIN],
+      credentials: true // Allow cookies and credentials to be sent
     })
   )
+
   app.use(cookieParser(COOKIE_SECRET))
   app.use(authTokenMiddleware(JWT_ACCESS_SECRET))
+
+  await apolloServer.start() // Start the server before applying middleware
 
   apolloServer.applyMiddleware({ app, cors: false })
 
